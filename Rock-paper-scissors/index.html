@@ -73,25 +73,36 @@
                 scissors: { beats: 'paper', losesTo: 'rock' }
             };
 
-            let statusPrefix = "The computer went with " + computerChoice + ". ";
+            let statusPrefix = "I went with " + computerChoice + ". ";
             if (userChoice === computerChoice) {
-                console.log(statusPrefix + "It's a tie!");
+                //console.log("It's a tie!");
                 statusLine1.textContent = statusPrefix + "It's a tie!";
             } else if (outcomes[userChoice].beats === computerChoice) {
                 //console.log("You win!");
-                statusLine1.textContent = statusPrefix + "You won!!";
+                statusLine1.textContent = statusPrefix + "You won that round!!";
+                myRoundsWon++;
             } else {
                 //console.log("You lose!");
-                statusLine1.textContent = "Oh, the computer beat you with " + computerChoice + ". Try again?";
+                statusLine1.textContent = "I beat you this time with " + computerChoice + ".";
+                computerRoundsWon++;
             }
+
+            console.log("Score (you/me): " + myRoundsWon + "/ " + computerRoundsWon);
         }
 
         function playGame() {
+            function getRoundWord(thisScore) {
+                if (thisScore === 1) {
+                    return " round.";
+                } else {
+                    return " rounds.";
+                }
+            
+            }
             console.clear();
             console.log("Let's play!");
 
-
-            if (roundsPlayed < MaxRounds) {
+            if (roundsPlayed < MaxRounds-1) {
                 computerChoice = getComputerChoice();
                 userChoice = validateUserChoice();
                 console.log("User entered: " + userChoice + ", against: " + computerChoice);
@@ -99,8 +110,7 @@
                 if (userChoice !== 0) {
                     ++roundsPlayed;
                     throwDown();
-
-                    statusLine2.textContent = "We're going " + MaxRounds + " rounds. You've played " + roundsPlayed + ".";
+                    statusLine2.textContent = "We're going " + MaxRounds + " rounds. That's round " + roundsPlayed + ".";
                 } else {
                     //console.log("bad user input");
                     statusLine1.textContent = "That's not one of the three. Try again.";
@@ -108,8 +118,10 @@
             } else {
                 inputField.value = "";
                 submitBtn.style.display = 'none';
-                statusLine1.textContent = "Game over";
-                statusLine2.textContent = "You've played all " + roundsPlayed + " rounds.";
+                statusLine1.textContent = "Game over, we've played all " + (roundsPlayed + 1) + " rounds.";
+                
+                statusLine2.textContent = "You won " + myRoundsWon + getRoundWord(myRoundsWon);
+                statusLine2.textContent = statusLine2.textContent + " I won " + computerRoundsWon + getRoundWord(computerRoundsWon);
             }
         }
         
@@ -121,6 +133,8 @@
 
         let roundsPlayed = 0;
         const MaxRounds = 5;
+        let myRoundsWon = 0;
+        let computerRoundsWon = 0;
        
         submitBtn.addEventListener('click', playGame);
     </script>
