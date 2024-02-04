@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rock-Paper-Scissors game</title>
+
+    <style>
+        html {
+            font-family: sans-serif;
+        }
+        body {
+            width: 50%;
+            max-width: 800px;
+            min-width: 480px;
+            margin: 0 auto;
+        }
+
+        p {
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form" id="userInput">
+        <p class="gameDescriptor"> Let's play rock-paper-scissors. I've made my choice; make yours.</p>
+        <label for="weaponField">Which one will you play? </label>
+        <input type="text" id="weaponField">
+        <input type="submit" class="choiceSubmit" value="Submit choice">
+        <p class="gameStatus1"> </p>
+        <p class="gameStatus2"> </p>
+    </div>
+
+    <script>
+        let computerChoice;
+        let userChoice;
+
+        function getComputerChoice() {
+            var thisChoice = Math.floor(Math.random() * 3) + 1;
+            switch (thisChoice) {
+                case 1:
+                thisChoice = "rock";
+                    break;
+                case 2:
+                thisChoice = "paper";
+                    break;
+                case 3:
+                thisChoice = "scissors";
+                    break;
+            }
+            return thisChoice;
+        }
+
+        function validateUserChoice() {
+            let optionsString = "rock-paper-scissors";
+            let thisChoice = (document.querySelector('#weaponField').value).toLowerCase();
+            thisChoice = thisChoice || null;
+
+            //console.log("match check on: " + thisChoice + ".... " + optionsString.indexOf(thisChoice));
+            //console.log("data type: " + typeof thisChoice);
+
+            if (optionsString.indexOf(thisChoice) !== -1) {
+                return thisChoice;
+            } else {
+                return 0;
+            }
+            
+        }
+
+        function throwDown() {
+            const outcomes = {
+                rock: { beats: 'scissors', losesTo: 'paper' },
+                paper: { beats: 'rock', losesTo: 'scissors' },
+                scissors: { beats: 'paper', losesTo: 'rock' }
+            };
+
+            let statusPrefix = "The computer went with " + computerChoice + ". ";
+            if (userChoice === computerChoice) {
+                console.log(statusPrefix + "It's a tie!");
+                statusLine1.textContent = statusPrefix + "It's a tie!";
+            } else if (outcomes[userChoice].beats === computerChoice) {
+                console.log("You win!");
+                statusLine1.textContent = statusPrefix + "You won!!";
+            } else {
+                console.log("You lose!");
+                statusLine1.textContent = "Oh, the computer beat you with " + computerChoice + ". Try again?";
+            }
+        }
+
+        function playGame() {
+            console.clear();
+            console.log("Let's play!");
+
+
+            if (roundsPlayed < MaxRounds) {
+                computerChoice = getComputerChoice();
+                userChoice = validateUserChoice();
+                console.log("User entered: " + userChoice + ", against: " + computerChoice);
+
+                if (userChoice !== 0) {
+                    ++roundsPlayed;
+                    console.log("up the rounds: " + roundsPlayed);
+                    throwDown();
+
+                    statusLine2.textContent = "We're going " + MaxRounds + " rounds. You've played " + roundsPlayed + ".";
+                } else {
+                    console.log("bad user input");
+                    statusLine1.textContent = "That's not one of the three. Try again.";
+                }
+            } else {
+                inputField.value = "";
+                statusLine1.textContent = "Game over";
+                statusLine2.textContent = "You've played all " + roundsPlayed + " rounds.";
+            }
+        }
+        
+        let inputField = document.querySelector('#weaponField');
+        let submitBtn = document.querySelector('.choiceSubmit');
+        let statusLine1 = document.querySelector('.gameStatus1');
+        let statusLine2 = document.querySelector('.gameStatus2');
+
+
+        let roundsPlayed = 0;
+        const MaxRounds = 5;
+       
+        submitBtn.addEventListener('click', playGame);
+    </script>
+</body>
+</html>
