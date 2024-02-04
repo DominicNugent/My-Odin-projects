@@ -92,13 +92,9 @@
 
         function playGame() {
             function getRoundWord(thisScore) {
-                if (thisScore === 1) {
-                    return " round.";
-                } else {
-                    return " rounds.";
-                }
-            
+                return thisScore === 1 ? " round." : " rounds.";
             }
+            
             console.clear();
             console.log("Let's play!");
 
