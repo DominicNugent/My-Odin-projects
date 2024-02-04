@@ -78,10 +78,10 @@
                 console.log(statusPrefix + "It's a tie!");
                 statusLine1.textContent = statusPrefix + "It's a tie!";
             } else if (outcomes[userChoice].beats === computerChoice) {
-                console.log("You win!");
+                //console.log("You win!");
                 statusLine1.textContent = statusPrefix + "You won!!";
             } else {
-                console.log("You lose!");
+                //console.log("You lose!");
                 statusLine1.textContent = "Oh, the computer beat you with " + computerChoice + ". Try again?";
             }
         }
@@ -98,12 +98,11 @@
 
                 if (userChoice !== 0) {
                     ++roundsPlayed;
-                    console.log("up the rounds: " + roundsPlayed);
                     throwDown();
 
                     statusLine2.textContent = "We're going " + MaxRounds + " rounds. You've played " + roundsPlayed + ".";
                 } else {
-                    console.log("bad user input");
+                    //console.log("bad user input");
                     statusLine1.textContent = "That's not one of the three. Try again.";
                 }
             } else {
