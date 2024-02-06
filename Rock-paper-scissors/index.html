@@ -36,18 +36,13 @@
 
         function getComputerChoice() {
             var thisChoice = Math.floor(Math.random() * 3) + 1;
-            switch (thisChoice) {
-                case 1:
-                thisChoice = "rock";
-                    break;
-                case 2:
-                thisChoice = "paper";
-                    break;
-                case 3:
-                thisChoice = "scissors";
-                    break;
-            }
-            return thisChoice;
+            const choiceMap = {
+                1: "rock",
+                2: "paper",
+                3: "scissors"
+            };
+
+            return choiceMap[thisChoice];
         }
 
         function validateUserChoice() {
@@ -58,15 +53,12 @@
             //console.log("match check on: " + thisChoice + ".... " + optionsString.indexOf(thisChoice));
             //console.log("data type: " + typeof thisChoice);
 
-            if (optionsString.indexOf(thisChoice) !== -1) {
-                return thisChoice;
-            } else {
-                return 0;
-            }
+            return optionsString.indexOf(thisChoice) !== -1 ? thisChoice : 0;
             
         }
 
         function throwDown() {
+            // determine whether the user or the computer has the winning choice
             const outcomes = {
                 rock: { beats: 'scissors', losesTo: 'paper' },
                 paper: { beats: 'rock', losesTo: 'scissors' },
@@ -87,14 +79,16 @@
                 computerRoundsWon++;
             }
 
-            console.log("Score (you/me): " + myRoundsWon + "/ " + computerRoundsWon);
+            //console.log("Score (you/me): " + myRoundsWon + "/ " + computerRoundsWon);
         }
 
         function playGame() {
+            // this handles each round of play, making sure the user's submission is valid
+            // and then calling throwDown to compare the user's choice to the computer's
             function getRoundWord(thisScore) {
                 return thisScore === 1 ? " round." : " rounds.";
             }
-            
+
             console.clear();
             console.log("Let's play!");
 
@@ -113,14 +107,13 @@
                 }
             } else {
                 inputField.value = "";
-                submitBtn.style.display = 'none';
-                statusLine1.textContent = "Game over, we've played all " + (roundsPlayed + 1) + " rounds.";
-                
-                statusLine2.textContent = "You won " + myRoundsWon + getRoundWord(myRoundsWon);
+                submitBtn.style.display = 'none';                
+                statusLine2.textContent = "Game over. You won " + myRoundsWon + getRoundWord(myRoundsWon);
                 statusLine2.textContent += " I won " + computerRoundsWon + getRoundWord(computerRoundsWon);
             }
         }
         
+        //initialize the variables that we need to stat things off, plus set function to process user input.
         let inputField = document.querySelector('#weaponField');
         let submitBtn = document.querySelector('.choiceSubmit');
         let statusLine1 = document.querySelector('.gameStatus1');
