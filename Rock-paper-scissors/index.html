@@ -9,20 +9,24 @@
             font-family: sans-serif;
         }
         body {
-            width: 50%;
+            width: 60%;
             max-width: 800px;
-            min-width: 480px;
+            min-width: 540px;
             margin: 0 auto;
         }
 
         p {
             padding-bottom: 20px;
         }
+        
+        #weaponField {
+    		width: 120px; 
+		}
     </style>
 </head>
 <body>
     <div class="form" id="userInput">
-        <p class="gameDescriptor"> Let's play rock-paper-scissors. I've made my choice; make yours.</p>
+        <p class="gameDescriptor"> Let's play rock-paper-scissors. I've made my choice. Make yours.</p>
         <label for="weaponField">Which one will you play? </label>
         <input type="text" id="weaponField">
         <input type="submit" class="choiceSubmit" value="Submit choice">
@@ -33,15 +37,14 @@
     <script>
         let computerChoice;
         let userChoice;
+        const choiceMap = {
+            1: "rock",
+            2: "paper",
+            3: "scissors"
+        };
 
         function getComputerChoice() {
             var thisChoice = Math.floor(Math.random() * 3) + 1;
-            const choiceMap = {
-                1: "rock",
-                2: "paper",
-                3: "scissors"
-            };
-
             return choiceMap[thisChoice];
         }
 
