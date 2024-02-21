@@ -11,7 +11,7 @@
         body {
             width: 60%;
             max-width: 800px;
-            min-width: 540px;
+            min-width: 510px;
             margin: 0 auto;
         }
 
@@ -27,13 +27,15 @@
 <body>
     <div class="form" id="userInput">
         <p class="gameDescriptor"> Let's play rock-paper-scissors. I've made my choice. Make yours.</p>
-        <div id="btnRow" class="btn">
+        <div id="btnRow">
             <button>Rock</button>
             <button>Paper</button>
             <button>Scissors</button>
         </div>
-        <p class="gameStatus1"> </p>
-        <p class="gameStatus2"> </p>
+        <div id="results">
+            <p class="gameStatus1"> </p>
+            <p class="gameStatus2"> </p>
+        </div>
     </div>
 
     <script>
@@ -45,21 +47,16 @@
             3: "scissors"
         };
 
-        function getComputerChoice() {
-            var thisChoice = Math.floor(Math.random() * 3) + 1;
-            return choiceMap[thisChoice];
-        }
-
 
         function throwDown() {
             // determine whether the user or the computer has the winning choice
+            console.log("User entered: " + userChoice + ", against: " + computerChoice);
+
             const outcomes = {
                 rock: { beats: 'scissors', losesTo: 'paper' },
                 paper: { beats: 'rock', losesTo: 'scissors' },
                 scissors: { beats: 'paper', losesTo: 'rock' }
             };
-
-            //console.log(`||${userChoice}||`);
 
             let statusPrefix = "I went with " + computerChoice + ". ";
             if (userChoice === computerChoice) {
@@ -74,45 +71,45 @@
                 statusLine1.textContent = "I beat you this time with " + computerChoice + ".";
                 computerRoundsWon++;
             }
-
-            //console.log("Score (you/me): " + myRoundsWon + "/ " + computerRoundsWon);
         }
 
         function playGame(event) {
             // this handles each round of play, making sure the user's submission is valid
             // and then calling throwDown to compare the user's choice to the computer's
+            function getComputerChoice() {
+                var thisChoice = Math.floor(Math.random() * 3) + 1;
+                return choiceMap[thisChoice];
+            }
+            function getRoundWord(thisScore) {
+                return thisScore === 1 ? " round." : " rounds.";
+            }
 
             console.clear();
             userChoice = event.target.textContent.toLowerCase();
             computerChoice = getComputerChoice();
-            console.log (`user/computer choices are: ${userChoice} / ${computerChoice}`);
 
+            console.log (`user/computer choices are: ${userChoice} / ${computerChoice}`);
             console.log("Let's play!");
 
-            if (roundsPlayed < MaxRounds-1) {
-                
-                console.log("User entered: " + userChoice + ", against: " + computerChoice);
+            if (Math.max(myRoundsWon, computerRoundsWon) < winningScore) {
+                throwDown();
+                statusLine2.textContent = `The score is you: ${myRoundsWon}, me: ${computerRoundsWon}.`;
+            } 
+            if (Math.max(myRoundsWon, computerRoundsWon) == winningScore) {
+                btnRow.style.display = 'none';                
 
-                if (userChoice !== 0) {
-                    ++roundsPlayed;
-                    throwDown();
-                } else {
-                    //console.log("bad user input");
-                    statusLine1.textContent = "That's not one of the three. Try again.";
-                }
+                headerLine.textContent = "Game over.";
             } else {
-                statusLine2.textContent = "Game over. You won " + myRoundsWon + getRoundWord(myRoundsWon);
-                statusLine2.textContent += " I won " + computerRoundsWon + getRoundWord(computerRoundsWon);
+                statusLine2.textContent = `The score is you: ${myRoundsWon}, me: ${computerRoundsWon}.`;
             }
         }
         
         //initialize the variables that we need to stat things off, plus set function to process user input.
+        let headerLine = document.querySelector('.gameDescriptor');
         let statusLine1 = document.querySelector('.gameStatus1');
         let statusLine2 = document.querySelector('.gameStatus2');
-
-
-        let roundsPlayed = 0;
-        const MaxRounds = 5000;
+        
+        const winningScore = 5;
         let myRoundsWon = 0;
         let computerRoundsWon = 0;
 
