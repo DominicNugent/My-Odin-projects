@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Etch-a-Sketch Project</title>
+		<style>
+			body {
+				margin: 0;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			#sketchBox {
+				width: 90vmin;
+				height: 90vmin;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0;
+				outline: 1px solid #000;
+			}
+
+			.box {
+				flex: 1 1 calc(6.25% - 1px);
+				height: 0;
+				padding-bottom: calc(6.25% - 1px);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				outline: 1px solid #000;
+				/* margin: 1px; */
+				background-color: darkgrey; /* Add background color */
+			}
+		</style>
+	</head>
+	<body>
+		<div id="sketchBox"></div>
+
+		<script>
+			const sketchBox = document.getElementById('sketchBox');
+
+			for (let i = 1; i <= 256; i++) {
+				const box = document.createElement('div');
+				box.className = 'box';
+				sketchBox.appendChild(box);
+			}
+		</script>
+	</body>
+</html>

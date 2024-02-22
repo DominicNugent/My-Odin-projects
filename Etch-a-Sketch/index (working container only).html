@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etch-a-Sketch Project</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #centeredSquare {
+            width: 90vmin; /* 90% of the viewport's smaller dimension */
+            height: 90vmin;
+            aspect-ratio: 1 / 1; /* Ensure the box maintains a 1:1 aspect ratio */
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+    <div id="centeredSquare"></div>
+</body>
+</html>
