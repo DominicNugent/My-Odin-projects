@@ -76,17 +76,14 @@
         function playGame(event) {
             // this handles each round of play, making sure the user's submission is valid
             // and then calling throwDown to compare the user's choice to the computer's
-            function getComputerChoice() {
-                var thisChoice = Math.floor(Math.random() * 3) + 1;
-                return choiceMap[thisChoice];
-            }
+            
             function getRoundWord(thisScore) {
                 return thisScore === 1 ? " round." : " rounds.";
             }
 
             console.clear();
             userChoice = event.target.textContent.toLowerCase();
-            computerChoice = getComputerChoice();
+            computerChoice = choiceMap[Math.floor(Math.random() * 3) + 1];
 
             console.log (`user/computer choices are: ${userChoice} / ${computerChoice}`);
             console.log("Let's play!");
