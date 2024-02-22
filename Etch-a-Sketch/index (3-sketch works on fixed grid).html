@@ -28,8 +28,8 @@
 			}
 
 			.box {
-				flex: 1 1 calc(100% / var(--validatedSize) - 1px); /* Updated box size based on validatedSize */
-				height: calc(100% / var(--validatedSize) - 1px); /* Updated box size based on validatedSize */
+				flex: 1 1 calc(6.25% - 1px);
+				height: calc(6.25% - 1px);
 				display: flex;
 				justify-content: center;
 				align-items: center;
@@ -39,52 +39,34 @@
 	</head>
 	<body>
         <div id="gridBtn">
-            <button>Set grid size</button>
+            <button id="gridBtn">Set grid size</button>
         </div>
 		<div id="sketchBox"></div>
 
 		<script>
 			const sketchBox = document.querySelector('#sketchBox');
-			// One listener for sketchBox so all children get one
-			sketchBox.addEventListener('mouseover', (event) => {
-                const eventTarget = event.target;
 
-                if (eventTarget.classList.contains('box')) {
-                    eventTarget.style.backgroundColor = 'darkblue';
-                }
-            });
+			for (let i = 1; i <= 256; i++) {
+				const box = document.createElement('div');
+				box.className = 'box';
+				sketchBox.appendChild(box);
+			}
 
-			let validatedSize = 16;
-			drawGrid(validatedSize);
-
-            function drawGrid(newGridSize) {
-				sketchBox.innerHTML = ''; // Remove existing boxes
-
-				document.documentElement.style.setProperty('--validatedSize', newGridSize);
-
-				// Loop to add new boxes based on the updated grid size
-				for (let i = 1; i <= newGridSize * newGridSize; i++) {
-					const box = document.createElement('div');
-					box.className = 'box';
-					sketchBox.appendChild(box);
-				}
-            }
-
-			// Let user to update grid size
 			const gridBtn = document.querySelector('#gridBtn');
+
+			// Event Listener for Button Click
 			gridBtn.addEventListener('click', showPopup);
 
 			function showPopup() {
 				const enteredGridSize = prompt('Enter grid size (10-100):');
-				validatedSize = validateGridSize(enteredGridSize);
+				const validatedSize = validateGridSize(enteredGridSize);
                 drawGrid(validatedSize);
 			}
 
-            // Make sure the grid stays within set limits
-			function validateGridSize(reqSize) {
+			function validateGridSize(size) {
 				const minSize = 10;
 				const maxSize = 100;
-				const parsedSize = parseInt(reqSize, 10);
+				const parsedSize = parseInt(size, 10);
 
 				if (isNaN(parsedSize) || parsedSize < minSize) {
                     alert(`This is below the minimum. Grid size set to: ${minSize}`);
@@ -98,6 +80,18 @@
 				}
 			}
 
+            function drawGrid(gridSize) {
+
+            }
+
+			// Event Listener for Mouseover
+			sketchBox.addEventListener('mouseover', (event) => {
+                const eventTarget = event.target;
+
+                if (eventTarget.classList.contains('box')) {
+                    eventTarget.style.backgroundColor = 'darkblue';
+                }
+            });
 		</script>
 	</body>
 </html>
