@@ -19,22 +19,28 @@
             }
 
 			#sketchBox {
-                width: 600px;
-                height: 600px;
-                /* display: flex; */
-                /* flex-direction: column;  */
-                /* gap: 0; */
+                width: 85vmin;
+                height: 85vmin;
+                display: flex;
+                flex-direction: column; 
+                gap: 0;
                 outline: 1px solid #000;
             }
 
             .grid-row {
                 display: flex;
                 gap: 0;
+                background-color: lightblue;
             }
 
-            .grid-box {
-                outline: 1px solid #d4d4d4;
-                background-color: rgb(234, 234, 234);
+            .box {
+                flex: 1 1 calc(100% / var(--validatedSize) - 1px); 
+                height: calc(100% / var(--validatedSize) - 1px); 
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                outline: 1px solid #000;
+                background-color: darkgray;
             }
 		</style>
 	</head>
@@ -46,37 +52,33 @@
 
 		<script>
 			const sketchBox = document.querySelector('#sketchBox');
-            sketchBox.addEventListener('mouseover', (event) => {
-                const eventTarget = event.target;
 
-                if (eventTarget.classList.contains('grid-box')) {
-                    eventTarget.style.backgroundColor = 'black';
-                }
-            });
-			let requestedGridSize = 16;
-			drawGrid(requestedGridSize);
+			let validatedSize = 16;
+			drawGrid(validatedSize);
 
             function drawGrid(newGridSize) {
                 sketchBox.innerHTML = ''; // Remove existing boxes
-                const sqrSize = sketchBox.offsetWidth / newGridSize;
-                console.log(`sketchBox width: ${sketchBox.offsetWidth}`);
-                console.log(`sqr width: ${sqrSize}`);
+                document.documentElement.style.setProperty('--validatedSize', newGridSize);
 
-                for (let i = 1; i <= newGridSize; i++) { 
+                for (let i = 1; i <= 2; i++) { //newGridSize
                     const gridRow = document.createElement('div');
                     gridRow.className = 'grid-row';
+                    gridRow.style.height = `calc(100% / ${newGridSize} - 1px)`;
+                    gridRow.style.width = '100%';
 
                     for (let j = 1; j <= newGridSize; j++) {
-                        const thisSqr = document.createElement('div');
-                        thisSqr.className = 'grid-box';
-                        thisSqr.style.height = `${sqrSize}px`;
-                        thisSqr.style.width = `${sqrSize}px`;
+                        const box = document.createElement('div');
+                        box.className = 'box';
+                        box.style.height = `calc(100% / ${newGridSize} - 1px)`;
+                        box.style.width = `calc(100% / ${newGridSize} - 1px)`;
 
-                        gridRow.appendChild(thisSqr);
-                        // sketchBox.appendChild(thisSqr);
-                        // thisSqr.addEventListener('mouseenter', (event) => {
-                        //     event.target.style.backgroundColor = 'darkblue';
-                        // });
+                        gridRow.appendChild(box);
+                        // sketchBox.appendChild(box);
+                        setTimeout(() => {
+                            console.log(`added box #${j}`);
+                            console.log(`assigned/actual height: ${box.style.height}/${box.clientHeight}`);
+                            if (j==newGridSize) {console.log(`Box style:`, box.style);}
+                        }, 0);
                     }
 
                     sketchBox.appendChild(gridRow);
@@ -91,8 +93,8 @@
 
 			function showPopup() {
 				const enteredGridSize = prompt('Enter grid size (10-100):');
-				requestedGridSize = validateGridSize(enteredGridSize);
-                drawGrid(requestedGridSize);
+				validatedSize = validateGridSize(enteredGridSize);
+                drawGrid(validatedSize);
 			}
 
             // Make sure the grid stays within set limits
