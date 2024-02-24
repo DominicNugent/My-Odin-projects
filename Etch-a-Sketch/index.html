@@ -51,6 +51,8 @@
 
                 if (eventTarget.classList.contains('grid-box')) {
                     eventTarget.style.backgroundColor = 'black';
+                    eventTarget.sqrOpacity = 1.0;
+                    fadeOut(eventTarget);
                 }
             });
 			let requestedGridSize = 16;
@@ -58,9 +60,10 @@
 
             function drawGrid(newGridSize) {
                 sketchBox.innerHTML = ''; // Remove existing boxes
+
                 const sqrSize = sketchBox.offsetWidth / newGridSize;
-                console.log(`sketchBox width: ${sketchBox.offsetWidth}`);
-                console.log(`sqr width: ${sqrSize}`);
+                // console.log(`sketchBox width: ${sketchBox.offsetWidth}`);
+                // console.log(`sqr width: ${sqrSize}`);
 
                 for (let i = 1; i <= newGridSize; i++) { 
                     const gridRow = document.createElement('div');
@@ -69,20 +72,34 @@
                     for (let j = 1; j <= newGridSize; j++) {
                         const thisSqr = document.createElement('div');
                         thisSqr.className = 'grid-box';
-                        thisSqr.style.height = `${sqrSize}px`;
                         thisSqr.style.width = `${sqrSize}px`;
+                        thisSqr.style.height = `${sqrSize}px`;
 
-                        gridRow.appendChild(thisSqr);
-                        // sketchBox.appendChild(thisSqr);
-                        // thisSqr.addEventListener('mouseenter', (event) => {
-                        //     event.target.style.backgroundColor = 'darkblue';
-                        // });
+                        // thisSqr.sqrOpacity = 1.0;
+
+                        gridRow.appendChild(thisSqr); 
                     }
 
                     sketchBox.appendChild(gridRow);
                     // document.body.appendChild(gridRow);
-                    console.log(`added row #${i}, height: ${gridRow.offsetHeight}`);
+                    // console.log(`added row #${i}, height: ${gridRow.offsetHeight}`);
                 }
+            }
+
+            function fadeOut(element) {
+                //make sure any previous interval is cancelled first
+                clearInterval(element.intervalId);
+                element.sqrOpacity = 1.0;
+                
+
+                element.intervalId = setInterval(() => {
+                    element.style.opacity = element.sqrOpacity;
+                    element.sqrOpacity -= 0.03;
+
+                    if (element.sqrOpacity <= 0.2) {
+                        clearInterval(element.intervalId);
+                    }
+                }, 500);
             }
 
 			// Let user to update grid size
