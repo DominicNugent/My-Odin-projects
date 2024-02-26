@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Calculator</title>
+
+        <style>
+            @font-face {
+                font-family: LEDfont;
+                src: url(14-Segment-LED-Regular.ttf);
+            }
+
+            h1 {
+                font-family: LEDfont;
+                font-size: 72px;
+                /* font-weight: 700; */
+                text-align: center;
+                margin-bottom: 20px;
+                color:blue;
+            }
+
+            #calculator {
+                width: 420px;
+                height: 605px;
+                margin: auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                border-radius:3px; 
+                background-color: rgb(67, 67, 67);
+            }
+
+            #readout {
+                font-family: LEDfont;
+                font-size: 65px;
+                text-align: right;
+                border:3px solid white; 
+                margin-top: 30px;
+                border-radius: 10px; 
+                width: 350px;
+                height: 42px;
+                padding-top: 2px;
+                color: black;
+                background-color: transparent;
+                color: beige;
+                overflow: hidden;       /* don't want numbers spilling beyond border */
+                white-space: nowrap;
+
+                display: flex;
+                justify-content: right;
+                align-items: center;
+            }
+
+            #btnGroup {
+                border:3px solid white; 
+                padding-top:7px; 
+                margin-top: 30px;
+                border-radius:10px; 
+                width: 350px;
+                height: 450px;
+                background-color: beige;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 13px;
+            }
+
+            .calcBtn {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 25px;
+                border:2px solid darkgray;
+                border-radius: 5px; 
+                width: 70px;
+                height: 70px;
+                color: black;
+                background-color: lightgray;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .modifier {
+                background-color: gray;
+            }
+
+            .operator {
+                background-color: rgb(182, 182, 182);
+            }
+
+            .operator.equal {
+                grid-column: span 2;
+                font-size: 25px;
+                border: 2px solid darkgray;
+                border-radius: 5px;
+                width: 157px; /* double-wide key */
+                height: 70px;
+                color: black;
+                background-color: orange;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>CALCULATOR</h1>
+        <div id="calculator">
+            <div id="readout">_________0</div>
+            <div id="btnGroup">
+                <div class="modifier calcBtn">CE</div>
+                <div class="modifier calcBtn">AC</div>
+                <div class="modifier calcBtn">DEL</div>
+                <div class="operator calcBtn">÷</div>
+                <div class="number calcBtn">7</div>
+                <div class="number calcBtn">8</div>
+                <div class="number calcBtn">9</div>
+                <div class="operator calcBtn">x</div>
+                <div class="number calcBtn">4</div>
+                <div class="number calcBtn">5</div>
+                <div class="number calcBtn">6</div>
+                <div class="operator calcBtn">+</div>
+                <div class="number calcBtn">1</div>
+                <div class="number calcBtn">2</div>
+                <div class="number calcBtn">3</div>
+                <div class="operator calcBtn">-</div>
+                <div class="number calcBtn">.</div>
+                <div class="number calcBtn">0</div>
+                <div class="operator calcBtn equal">=</div>
+            </div>
+            <div id="keys">
+            </div>
+        </div>
+
+        <script>
+            function updateReadout(displayNum) {
+                // Ensure the displayNum is represented as a 10-character string, prefixed with underscores if needed.
+                let numString = displayNum.toString();
+                while (numString.length < 10) numString = "_" + numString;
+                document.querySelector("#readout").textContent = numString;
+            }
+
+            function btnClicked(event) {
+                let clickTarget = event.target;
+                let buttonType = clickTarget.classList.contains('calcBtn')
+                    ? clickTarget.classList.contains('number') ? 'number' :
+                    clickTarget.classList.contains('operator') ? 'operator' :
+                    clickTarget.classList.contains('modifier') ? 'modifier' :
+                    // Handle other cases if needed
+                    null
+                    : null;
+
+                    switch (buttonType) {
+                        case 'number':
+                            keyNum = clickTarget.textContent;
+                            console.log({keyNum})
+                            if (operand2 == "0") {operand2 = ""};
+                            operand2 = operand2.concat(keyNum);
+                            updateReadout(operand2);
+                            console.log("Number button clicked. Operand2 is now: " + operand2);
+                            break;
+
+                        case 'operator':
+                            keyOperator = clickTarget.textContent;
+                            if (keyOperator === "=") {resolveExpression()};
+                            if (keyOperator === "÷") {keyOperator = "/"};
+                            if (keyOperator === "x") {keyOperator = "*"};
+                            operator = keyOperator;
+                            console.log('Operator button clicked: ' + operator);
+                            break;
+
+                            case 'modifier':
+                            keyMod = clickTarget.textContent;
+
+                            switch (keyMod) {
+                                case 'AC': 
+                                    operand1 = "";
+                                    operand2 = "0";
+                                    operator = "";
+                                    updateReadout(operand2);
+                                    break;
+
+                                case 'CE': 
+                                    operand2 = "0";
+                                    updateReadout(operand2);
+                                    break;
+
+                                case 'DEL': 
+                                    operand2 = operand2.slice(0, -1);
+                                    if (operand2 == 0) {operand2 = "0"};
+                                    updateReadout(operand2);
+                                    break;
+                            }
+                            console.log('Modifier button clicked');
+                            break;
+
+                        default:
+                            // Placeholder action for unknown button
+                            console.log('Unknown button clicked');
+                    }
+                
+            }
+
+            function resolveExpression() {
+                //what does expression equal?
+            }
+
+            console.log('Num and mod keys work.');
+            console.log('Operator keys partly work: operator assigned, but expression not updated.');
+            // Attach btnClicked to all calculator buttons in btnGroup
+            document.querySelector('#btnGroup').addEventListener('click', btnClicked);
+
+            let operand1 = "";
+            let operand2 = "0";
+            let operator = "";
+        </script>
+
+    </body>
