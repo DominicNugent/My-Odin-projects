@@ -165,7 +165,11 @@
 
                         case 'operator':
                             keyOperator = clickTarget.textContent;
-                            if (keyOperator === "=") {resolveExpression()};
+                            if (keyOperator === "=") {
+                                resolveExpression();
+                                break;
+                            };
+
                             if (keyOperator === "÷") {keyOperator = "/"};
                             if (keyOperator === "x") {keyOperator = "*"};
                             operator = keyOperator;
@@ -204,14 +208,42 @@
                 
             }
 
+            // darken whatever button is pressed then revert it right after.
+            function showBtnPress(event) {
+
+                function darkenColor(color) {
+                    let rgb = color.substring(4, color.length - 1).replace(/ /g, '').split(',');
+                    let darkenedRgb = rgb.map(value => Math.max(parseInt(value) - 50, 0));
+                    return `rgb(${darkenedRgb.join(',')})`;
+                }
+
+                // console.log('darken the button');
+                let thisButton = event.target;
+                let currentBackgroundColor = window.getComputedStyle(thisButton).backgroundColor;
+                let darkenedBackgroundColor = darkenColor(currentBackgroundColor);
+                thisButton.style.backgroundColor = darkenedBackgroundColor;
+
+                // Revert the color after a delay 
+                setTimeout(() => {
+                    thisButton.style.backgroundColor = currentBackgroundColor;
+                }, 300);
+            }            
+
             function resolveExpression() {
                 //what does expression equal?
+                let result = eval(operand1 + operator + operand2);
+                console.log(`Expression = ${result}`);
+                console.log(`reset vars...`);
+                updateReadout(result);
+
             }
+
 
             console.log('Num and mod keys work.');
             console.log('Operator keys partly work: operator assigned, but expression not updated.');
             // Attach btnClicked to all calculator buttons in btnGroup
             document.querySelector('#btnGroup').addEventListener('click', btnClicked);
+            document.querySelector('#btnGroup').addEventListener('click', showBtnPress);
 
             let operand1 = "";
             let operand2 = "0";
