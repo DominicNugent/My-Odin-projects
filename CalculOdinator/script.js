@@ -37,8 +37,7 @@ function btnClicked(event) {
                         operand2 = expValue.toString();
                         updateReadout(operand2);
 
-                        showExpElements("Revised values after resolve:");
-                    
+                        // showExpElements("Revised values after resolve:");
                     }   
                 }
                 
@@ -94,7 +93,7 @@ function btnClicked(event) {
         }
 
         // To get a string and the name/value pair, separate them with a comma
-        showExpElements("Click proc'g done.");
+        // showExpElements("Click proc'g done.");
         console.log("-----");
     
 }
@@ -123,14 +122,14 @@ function showBtnPress(event) {
 function reshuffleOperands() {
     operand1 = operand2;
     operand2 = ""; //null
-    showExpElements('reshuffle operands!');
+    // showExpElements('reshuffle operands!');
 }
 
 //what does expression equal?
 function resolveExpression() {
     let thisExpression = operand1 + operator + operand2;
     // console.log("Expression built:", {thisExpression});
-    showExpElements("Resolved exp with:");
+    // showExpElements("Resolved exp with:");
     let result = eval(thisExpression);
     //console.log(`Expression result = ${result}`);
     return result;
@@ -162,7 +161,5 @@ let operand1 = "";
 let operand2 = "0";
 let operator = "";
 
-console.log("--TEST that hitting multiple operators in a row doesn't break it.");
-console.log("Pressing a number after hitting = should clear out operator and operand 1?")
-console.log("Pressing 9, =, 6, = should show 6, not 96")
+console.log("--Readout should convert #s too large for display.")
 console.log("------------");
