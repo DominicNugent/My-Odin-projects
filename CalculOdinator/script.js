@@ -1,10 +1,4 @@
-function updateReadout(displayNum) {
-    // Ensure the displayNum is represented as a 10-character string, prefixed with underscores if needed.
-    let numString = displayNum.toString();
-    while (numString.length < 10) numString = "_" + numString;
-    document.querySelector("#readout").textContent = numString;
-}
-
+//Handle all the button clicks, using buttonType to figure out which action is needed.
 function btnClicked(event) {
     let clickTarget = event.target;
     let buttonType = clickTarget.classList.contains('calcBtn')
@@ -18,27 +12,37 @@ function btnClicked(event) {
         switch (buttonType) {
             case 'number':
                 keyNum = clickTarget.textContent;
-                console.log({keyNum})
-                if (operand2 == "0") {operand2 = ""};
+                
+                if (operand2 === "0" || operand2 === null) {operand2 = "";}
+                console.log("Processing num key: ", keyNum);
+                // console.log({keyNum})
+                // console.log({operand2});
                 operand2 = operand2.concat(keyNum);
                 updateReadout(operand2);
-                console.log("Number button clicked. Operand2 is now: " + operand2);
+                //console.log("Operand2 is now: " + operand2);
                 break;
 
             case 'operator':
-                keyOperator = clickTarget.textContent;
-                if (keyOperator === "=") {
-                    resolveExpression();
-                    break;
-                };
+                console.log('Operator button clicked. do wehave 2 values?');
 
-                if (keyOperator === "÷") {keyOperator = "/"};
-                if (keyOperator === "x") {keyOperator = "*"};
-                operator = keyOperator;
-                console.log('Operator button clicked: ' + operator);
+                if (operand1 && operand2) {resolveExpression();}
+
+                keyOperator = clickTarget.textContent;
+                if (keyOperator !== "=") {
+                    if (keyOperator === "÷") {keyOperator = "/"};
+                    if (keyOperator === "x") {keyOperator = "*"}; //"×" alt multiplication char
+                    operator = keyOperator;
+                    //reshuffleOperands();
+                } 
+
+                console.log('Operator button clicked was: ' + operator);
+                console.log("Do we resolve expression?");
+                !operand1 ? reshuffleOperands() : null;
+                !operand2 ? console.log("Don't resolve, operand2 is falsy:", operand2) : null;
+
                 break;
 
-                case 'modifier':
+            case 'modifier':
                 keyMod = clickTarget.textContent;
 
                 switch (keyMod) {
@@ -55,9 +59,11 @@ function btnClicked(event) {
                         break;
 
                     case 'DEL': 
-                        operand2 = operand2.slice(0, -1);
-                        if (operand2 == 0) {operand2 = "0"};
-                        updateReadout(operand2);
+                        if (operand2 !== '') {
+                            operand2 = operand2.slice(0, -1);
+                            if (operand2 == 0) {operand2 = "0"};
+                            updateReadout(operand2);
+                        }
                         break;
                 }
                 console.log('Modifier button clicked: ' + keyMod);
@@ -67,6 +73,11 @@ function btnClicked(event) {
                 // Placeholder action for unknown button
                 console.log('Unknown button clicked');
         }
+
+        console.log("Btn click processing done, operands are:");
+        console.log({operand1});
+        console.log({operand2});
+        console.log("-----");
     
 }
 
@@ -89,21 +100,42 @@ function showBtnPress(event) {
     setTimeout(() => {
         thisButton.style.backgroundColor = currentBackgroundColor;
     }, 300);
-}            
+}
 
+function reshuffleOperands() {
+    console.log('reshuffle operands!');
+    operand1 = operand2;
+    operand2 = ""; //null
+    console.log({operand1});
+    console.log({operand2});
+}
+
+//what does expression equal?
 function resolveExpression() {
-    //what does expression equal?
-    let result = eval(operand1 + operator + operand2);
-    console.log(`Expression = ${result}`);
-    console.log(`reset vars...`);
+    let thisExpression = operand1 + operator + operand2;
+    console.log("Resolve expression! Combined and indiv values are: ");
+    console.log({thisExpression});
+    console.log({operand1});
+    console.log({operator});
+    console.log({operand2});
+    let result = eval(thisExpression);
+    console.log(`Expression result = ${result}`);
     updateReadout(result);
 
+    operand1 = "";
+    operand2 = result.toString();
+    
+}
+
+function updateReadout(displayNum) {
+    // Ensure the displayNum is represented as a 10-character string, prefixed with underscores if needed.
+    let numString = displayNum.toString();
+    while (numString.length < 10) numString = "_" + numString;
+    document.querySelector("#readout").textContent = numString;
 }
 
 
-console.log('Num and mod keys work.');
-console.log('Operator keys partly work: operator assigned, but expression not updated.');
-// Attach btnClicked to all calculator buttons in btnGroup
+// Attach btnClicked to all calculator buttons in btnGroup to get things rolling.
 document.querySelector('#btnGroup').addEventListener('click', btnClicked);
 document.querySelector('#btnGroup').addEventListener('click', showBtnPress);
 
