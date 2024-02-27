@@ -13,33 +13,49 @@ function btnClicked(event) {
             case 'number':
                 keyNum = clickTarget.textContent;
                 
-                if (operand2 === "0" || operand2 === null) {operand2 = "";}
+                if (operand2 === "0") {operand2 = "";} //|| operand2 === null
                 console.log("Processing num key: ", keyNum);
                 // console.log({keyNum})
-                // console.log({operand2});
+                
                 operand2 = operand2.concat(keyNum);
                 updateReadout(operand2);
-                //console.log("Operand2 is now: " + operand2);
+                // showExpElements("Number finished with:");
                 break;
 
             case 'operator':
-                console.log('Operator button clicked. do wehave 2 values?');
-
-                if (operand1 && operand2) {resolveExpression();}
-
                 keyOperator = clickTarget.textContent;
+                console.log('Operator button clicked:', keyOperator);
+
+                if (operand1 && operand2) {
+                    if (operator === '') {
+                        operand1 = "";
+                    } else {
+                        let expValue = resolveExpression();
+
+                        operand1 = "";
+                        operator = "";
+                        operand2 = expValue.toString();
+                        updateReadout(operand2);
+
+                        showExpElements("Revised values after resolve:");
+                    
+                    }   
+                }
+                
                 if (keyOperator !== "=") {
                     if (keyOperator === "÷") {keyOperator = "/"};
                     if (keyOperator === "x") {keyOperator = "*"}; //"×" alt multiplication char
                     operator = keyOperator;
                     //reshuffleOperands();
-                } 
+                } else {
+                    console.log("--In if statement... Operator is: =");
 
-                console.log('Operator button clicked was: ' + operator);
-                console.log("Do we resolve expression?");
+                }
+
+                console.log("check for = and then keep next key from appending operand2?");
+                //console.log("Do we resolve expression?");
                 !operand1 ? reshuffleOperands() : null;
-                !operand2 ? console.log("Don't resolve, operand2 is falsy:", operand2) : null;
-
+                
                 break;
 
             case 'modifier':
@@ -53,9 +69,12 @@ function btnClicked(event) {
                         updateReadout(operand2);
                         break;
 
-                    case 'CE': 
-                        operand2 = "0";
-                        updateReadout(operand2);
+                    case 'CE':
+                        if (operand2) { 
+                            operand2 = "";
+                            updateReadout("0");
+                            // console.log("CE btn...");
+                        }
                         break;
 
                     case 'DEL': 
@@ -74,9 +93,8 @@ function btnClicked(event) {
                 console.log('Unknown button clicked');
         }
 
-        console.log("Btn click processing done, operands are:");
-        console.log({operand1});
-        console.log({operand2});
+        // To get a string and the name/value pair, separate them with a comma
+        showExpElements("Click proc'g done.");
         console.log("-----");
     
 }
@@ -103,35 +121,36 @@ function showBtnPress(event) {
 }
 
 function reshuffleOperands() {
-    console.log('reshuffle operands!');
     operand1 = operand2;
     operand2 = ""; //null
-    console.log({operand1});
-    console.log({operand2});
+    showExpElements('reshuffle operands!');
 }
 
 //what does expression equal?
 function resolveExpression() {
     let thisExpression = operand1 + operator + operand2;
-    console.log("Resolve expression! Combined and indiv values are: ");
-    console.log({thisExpression});
-    console.log({operand1});
-    console.log({operator});
-    console.log({operand2});
+    // console.log("Expression built:", {thisExpression});
+    showExpElements("Resolved exp with:");
     let result = eval(thisExpression);
-    console.log(`Expression result = ${result}`);
-    updateReadout(result);
-
-    operand1 = "";
-    operand2 = result.toString();
-    
+    //console.log(`Expression result = ${result}`);
+    return result;
 }
 
+//Ensure the readout shows as a 10-character string, 
+//prefixed with underscores (which are a blank char in the chosen font) as needed.
 function updateReadout(displayNum) {
-    // Ensure the displayNum is represented as a 10-character string, prefixed with underscores if needed.
     let numString = displayNum.toString();
     while (numString.length < 10) numString = "_" + numString;
-    document.querySelector("#readout").textContent = numString;
+
+    //Create a blank flash like it had to think about the answer
+    document.querySelector("#readout").textContent = "__________"; 
+    setTimeout(() => {
+        document.querySelector("#readout").textContent = numString; // Set to numString after 300 milliseconds
+    }, 200);
+}
+
+function showExpElements(msg) {
+    console.log(msg, {operand1}, {operator}, {operand2});
 }
 
 
@@ -142,3 +161,8 @@ document.querySelector('#btnGroup').addEventListener('click', showBtnPress);
 let operand1 = "";
 let operand2 = "0";
 let operator = "";
+
+console.log("--TEST that hitting multiple operators in a row doesn't break it.");
+console.log("Pressing a number after hitting = should clear out operator and operand 1?")
+console.log("Pressing 9, =, 6, = should show 6, not 96")
+console.log("------------");

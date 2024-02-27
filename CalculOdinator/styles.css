@@ -14,7 +14,7 @@
     margin: auto;
     display: flex;
     flex-direction: column;
-    border-radius:3px; 
+    border-radius:4px; 
     background-color: rgb(67, 67, 67);
 }
 #calculator {
