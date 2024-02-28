@@ -14,7 +14,7 @@ function btnClicked(event) {
                 keyNum = clickTarget.textContent;
                 
                 if (operand2 === "0") {operand2 = "";} //|| operand2 === null
-                console.log("Processing num key: ", keyNum);
+                // console.log("Processing num key: ", keyNum);
                 // console.log({keyNum})
                 
                 operand2 = operand2.concat(keyNum);
@@ -24,7 +24,7 @@ function btnClicked(event) {
 
             case 'operator':
                 keyOperator = clickTarget.textContent;
-                console.log('Operator button clicked:', keyOperator);
+                // console.log('Operator button clicked:', keyOperator);
 
                 if (operand1 && operand2) {
                     if (operator === '') {
@@ -42,16 +42,12 @@ function btnClicked(event) {
                 }
                 
                 if (keyOperator !== "=") {
+                    //needed to ensure eval can resolve expression.
                     if (keyOperator === "÷") {keyOperator = "/"};
                     if (keyOperator === "x") {keyOperator = "*"}; //"×" alt multiplication char
                     operator = keyOperator;
-                    //reshuffleOperands();
-                } else {
-                    console.log("--In if statement... Operator is: =");
+                } 
 
-                }
-
-                console.log("check for = and then keep next key from appending operand2?");
                 //console.log("Do we resolve expression?");
                 !operand1 ? reshuffleOperands() : null;
                 
@@ -84,7 +80,7 @@ function btnClicked(event) {
                         }
                         break;
                 }
-                console.log('Modifier button clicked: ' + keyMod);
+                // console.log('Modifier button clicked: ' + keyMod);
                 break;
 
             default:
@@ -94,7 +90,7 @@ function btnClicked(event) {
 
         // To get a string and the name/value pair, separate them with a comma
         // showExpElements("Click proc'g done.");
-        console.log("-----");
+        // console.log("-----");
     
 }
 
@@ -107,15 +103,16 @@ function showBtnPress(event) {
         return `rgb(${darkenedRgb.join(',')})`;
     }
 
-    // console.log('darken the button');
     let thisButton = event.target;
-    let currentBackgroundColor = window.getComputedStyle(thisButton).backgroundColor;
-    let darkenedBackgroundColor = darkenColor(currentBackgroundColor);
-    thisButton.style.backgroundColor = darkenedBackgroundColor;
+    if (thisButton.dataset.currentBackgroundColor === undefined) {
+        thisButton.dataset.currentBackgroundColor = window.getComputedStyle(thisButton).backgroundColor;
+        thisButton.dataset.darkenedBackgroundColor = darkenColor(thisButton.dataset.currentBackgroundColor);
+    }
+    thisButton.style.backgroundColor = thisButton.dataset.darkenedBackgroundColor; // Corrected this line
 
     // Revert the color after a delay 
     setTimeout(() => {
-        thisButton.style.backgroundColor = currentBackgroundColor;
+        thisButton.style.backgroundColor = thisButton.dataset.currentBackgroundColor; // Corrected this line
     }, 300);
 }
 
@@ -138,9 +135,32 @@ function resolveExpression() {
 //Ensure the readout shows as a 10-character string, 
 //prefixed with underscores (which are a blank char in the chosen font) as needed.
 function updateReadout(displayNum) {
-    let numString = displayNum.toString();
-    while (numString.length < 10) numString = "_" + numString;
 
+    function limitDecimalAccuracy(thisNum) {
+        if (thisNum === ".") return thisNum;
+        
+        let decimalPartLength = (thisNum.toString().split('.')[1] || []).length;
+        let maxDecimalPlaces = Math.min(8, decimalPartLength);
+        const roundedNumber = parseFloat(thisNum).toFixed(maxDecimalPlaces);
+
+        return roundedNumber.toString();
+    }
+
+    let numString = limitDecimalAccuracy(displayNum);
+    
+    // console.log(`Display number came in as: ${numString}`);
+    // console.log ('Digit count: ' + numString.length)
+
+    // Check if the number has more than 10 digits. Truncate/round to get 10 digits.
+    if (numString.length > 10) {
+        numString = parseFloat(numString).toExponential(4);
+        numString = numString.toUpperCase();
+    } 
+    while (numString.length < 10) numString = "_" + numString;
+    
+
+    // console.log(`Display number displayed: ${numString}`);
+    // console.log("------------");
     //Create a blank flash like it had to think about the answer
     document.querySelector("#readout").textContent = "__________"; 
     setTimeout(() => {
@@ -161,5 +181,4 @@ let operand1 = "";
 let operand2 = "0";
 let operator = "";
 
-console.log("--Readout should convert #s too large for display.")
-console.log("------------");
+//console.log("------------");
