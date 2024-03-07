@@ -1,0 +1,5 @@
+--get remote.origin.url
+or
+git remote -v
+
+origin	git@github.com:DominicNugent/My-Odin-projects.git

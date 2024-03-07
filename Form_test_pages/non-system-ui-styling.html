@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* prevents 2nd form getting system-UI styling */
+        .form2 input {
+            appearance: none;
+        }
+
+        .form3 input[type="checkbox"] {
+            appearance: none;
+        }
+
+        .form3 input[type="checkbox"] {
+            position: relative;
+            width: 1em;
+            height: 1em;
+            border: 1px solid gray;
+            /* Adjusts the position of the checkboxes on the text baseline */
+            vertical-align: -2px;
+            /* Set here so that Windows' High-Contrast Mode can override */
+            color: green;
+        }
+
+        .form3 input[type="checkbox"]::before {
+            content: "✔";/*safari still used blue checkbox, with this on top — BAD!*/
+            position: absolute;
+            font-size: 1.2em;
+            right: -1px;
+            top: -0.3em;
+            visibility: hidden;
+        }
+
+        .form3 input[type="checkbox"]:checked::before {
+            /* Use `visibility` instead of `display` to avoid recalculating layout */
+            visibility: visible;
+        }
+
+        .form3 input[type="checkbox"]:disabled {
+            border-color: black;
+            background: #ddd;
+            color: gray;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="form1">
+        <form>
+            <!-- note how the other two forms have boxes around them -->
+            <p>
+                <label for="search">search: </label>
+                <input id="search" name="search" type="search" />
+            </p>
+            <p>
+                <label for="text">text: </label>
+                <input id="text" name="text" type="text" />
+            </p>
+            <p>
+                <label for="date">date: </label>
+                <input id="date" name="date" type="datetime-local" />
+            </p>
+            <p>
+                <label for="radio">radio: </label>
+                <input id="radio" name="radio" type="radio" />
+            </p>
+            <p>
+                <label for="checkbox">checkbox: </label>
+                <input id="checkbox" name="checkbox" type="checkbox" />
+            </p>
+            <p><input type="submit" value="submit" /></p>
+            <p><input type="button" value="button" /></p>
+        </form>
+    </div>
+    <div class="form2">
+        <form>
+            <fieldset>
+                <legend>Form 2</legend>
+                <p>
+                    <label for="search">search: </label>
+                    <input id="search" name="search" type="search" />
+                </p>
+                <p>
+                    <label for="text">text: </label>
+                    <input id="text" name="text" type="text" />
+                </p>
+                <p>
+                    <label for="date">date: </label>
+                    <input id="date" name="date" type="datetime-local" />
+                </p>
+                <p>
+                    <label for="radio">radio: </label>
+                    <input id="radio" name="radio" type="radio" />
+                </p>
+                <p>
+                    <label for="checkbox">checkbox: </label>
+                    <input id="checkbox" name="checkbox" type="checkbox" />
+                </p>
+                <p><input type="submit" value="submit" /></p>
+                <p><input type="button" value="button" /></p>
+            </fieldset>
+        </form>
+    </div>
+    <div class="form3">
+        <form>
+            <fieldset>
+                <legend>Form 3</legend>
+            
+                <p>
+                    <label>
+                        <input type="checkbox" name="fruit" value="cherry" />
+                        I like cherry
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input type="checkbox" name="fruit" value="banana" disabled />
+                        I can't like banana
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input type="checkbox" name="fruit" value="strawberry" />
+                        I like strawberry
+                    </label>
+                </p>
+            </fieldset>
+        </form>
+    </div>
+</body>
+</html>

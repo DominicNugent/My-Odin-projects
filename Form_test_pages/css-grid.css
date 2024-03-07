@@ -1,0 +1,61 @@
+/* // Full height! */
+body {
+  height: 100vh;
+  /* use the following if we want footer to stay */
+  /* at the bottom til page content pushes it down */
+  /* min-height: 100vh; */
+}
+
+
+/* // Grid layout */
+body {
+  display: grid;
+  grid-template-areas: 'header header'
+                       'nav main'
+                       'footer footer';
+  grid-template-columns: minmax(auto, 12em) 5fr;
+  grid-template-rows: auto 1fr auto;
+}
+
+h1 {
+  grid-area: header;
+}
+
+footer {
+  grid-area: footer;
+}
+
+nav {
+  grid-area: nav;
+}
+
+
+article {
+  grid-area: main;
+}
+
+
+/* // Style */
+* {
+  box-sizing: border-box;
+}
+
+h1, footer {
+  background: lightgray;
+}
+
+nav {
+  border-right: 1px solid lightgray;
+}
+
+nav, article {
+  overflow-y: auto;
+}
+
+h1, nav, article, footer {
+  padding: 1rem;
+}
+
+footer {
+  font-size:12px;
+}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!-- saved from url=(0094)https://mdn.github.io/learning-area/html/forms/form-validation/detailed-custom-validation.html -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width">
+    <title>Detailed custom validation</title>
+    <style>
+      body {
+        font: 1em sans-serif;
+        width: 250px;
+        padding: 0;
+        margin : 0 auto;
+      }
+
+      p * {
+        display: block;
+      }
+
+      label {
+        margin-top: 20px; 
+      }
+
+      input[type=email]{
+        -webkit-appearance: none;
+        appearance: none;
+
+        width: 100%;
+        border: 1px solid #333;
+        margin: 0;
+
+        font-family: inherit;
+        font-size: 90%;
+
+        box-sizing: border-box;
+      }
+
+      /* This is our style for the invalid fields */
+      input:invalid{
+        border-color: #900;
+        background-color: #FDD;
+      }
+
+      input:focus:invalid {
+        outline: none;
+      }
+
+      /* This is the style of our error messages */
+      .error {
+        width  : 100%;
+        padding: 0;
+
+        font-size: 80%;
+        color: white;
+        background-color: #900;
+        border-radius: 0 0 5px 5px;
+
+        box-sizing: border-box;
+      }
+
+      .error.active {
+        padding: 0.3em;
+      }
+    </style>
+  <style>@media print {#ghostery-tracker-tally {display:none !important}}</style><script>(function t(){!function(){function h(n,i,r){i=i||{};var o=n.ownerDocument||n,a=o.createEvent?o.createEvent("CustomEvent"):o.createEventObject();for(var e in a.initCustomEvent&&a.initCustomEvent(i.type,!!i.bubbles,!!i.cancelable,i.detail),i)a[e]=i[e];return setTimeout(function(){try{n.dispatchEvent?n.dispatchEvent(a):n.fireEvent("on"+i.type,o.createEventObject())}catch(s){var e=n["listen"+i.type];if(e)for(var t=0;t<e.length;++t)try{e[t].call(n,a)}catch(s){}}r()},0),this}function g(e,t,n){function i(e,t){try{var n=e.ownerDocument;if(n.createEventObject){var i=n.createEventObject();e.fireEvent("on"+t,i)}else(i=n.createEvent("HTMLEvents")).initEvent(t,!0,!0),e.dispatchEvent(i)}catch(r){}}var r=!0,o=e.className&&-1!=e.className.indexOf("fancified");if(window.jQuery){var a=window.jQuery(e);try{if(a.selectBoxIt)a.selectBoxIt("selectOption",a.val());else if(a.data("chosen")||a.chosen)a.trigger("chosen:updated").trigger("liszt:updated");else if(a.data("chooserElement"))a.trigger("change");else if(a.fancySelect)a.get("fancySelect").select("value",a.val());else if(a.selectBox)a.selectBox("value",a.val());else if(a.selectric)a.selectric("refresh");else if(a.coreUISelect){var s=a.data("coreUISelect");s.isSelectShow=!0,s.changeDropdownData(),s.isSelectShow=!1}else if(a.data("myJSPulldownObject"))a.data("myJSPulldownObject").setToValue(a.val());else if(a.fancyfields)a.setVal(a.val());else if(a.data("select2"));else if(a.data("selectize"))r=!1,a.data("selectize").setValue(a.val());else if(a.hasClass("fancified"))a.trigger("update");else if(a.selectmenu){var A=a.val();try{a.selectmenu("value",a[0].options[0].value)}catch(l){}a.selectmenu("value",A)}else a.hasClass("select-hidden")&&a.next("div.select-styled").length&&a.next("div.select-styled").next(".select-options").length&&(ulElement=a.next("div.select-styled").next(".select-options"),liElement=ulElement.find("li[rel='"+a.val()+"']"),liElement.click());a.trigger("change")}catch(l){}}r&&(o&&i(e,"update"),i(e,"change"),i(e,"blur")),n()}function o(t,n,i,r){var o=t.value;h(t,{type:"keydown",keyCode:n,which:n,charCode:n,bubbles:!0},function(){h(t,{type:"keypress",keyCode:n,which:n,charCode:n,bubbles:!0},function(){setTimeout(function(){var e=t.value;o==e&&(t.value=i),h(t,{type:"input",keyCode:n,which:n,charCode:n,bubbles:!0},function(){h(t,{type:"keyup",keyCode:n,which:n,charCode:n,bubbles:!0},function(){r()})})},1)})})}function a(e,t,n,i){if(t&&""!=t){var r=t.charCodeAt(0);n+=t.charAt(0),o(e,r,n,function(){a(e,t.substring(1),n,i)})}else i()}function A(e,t,n){if(window.abineTriggerChangeInProgress)setTimeout(function(){A(e,t,n)},100);else{e.setAttribute("mmautofilling","now"),e.focus(),e.value=t;var i=!0;window.abineTriggerChangeInProgress=!0;try{if(window.jQuery){var r=window.jQuery(e);r.data("rawMaskFn")||r.mask||r.CardPhoneFormatting?r.focus().val(t).trigger("input").trigger("paste"):r.next(".inner").find(".options").length&&(i=!1,r.next(".inner").find(".options").find("span").each(function(){var e=$(this);-1<$(e).html().toLowerCase().indexOf(t)&&$(e).click()}))}}catch(s){}e.defaultValue=t;try{var o=e._valueTracker;o&&o.setValue(t+"old")}catch(s){}try{e.__preactattr_&&e.__preactattr_.onChange&&(e.value=t,e.__preactattr_.onChange({target:e}),e.click())}catch(s){}try{var a=new Event("input",{bubbles:!0,cancelable:!0,data:t});a.simulated=!0,e.dispatchEvent(a)}catch(s){}try{h(e,{type:"keyup",keyCode:38,which:38,charCode:38,bubbles:!0},function(){})}catch(s){}i?h(e,{type:"change"},function(){h(e,{type:"blur"},function(){window.abineTriggerChangeInProgress=!1,e.removeAttribute("mmautofilling"),n()})}):(e.removeAttribute("mmautofilling"),window.abineTriggerChangeInProgress=!1,n())}}function t(e,t,n){try{e.ownerDocument.defaultView.focus()}catch(i){}h(e,{type:"focus"},function(){h(e,{type:"click"},function(){a(e,t+"\n","",function(){A(e,t,function(){h(document,{type:"abineFilled"},function(){n()})})})})})}function i(e,t,n,i){var r=/[\s]+/g,o=(t||"").toLowerCase().replace(r,""),a=function(){h(document,{type:"abineFilled"},function(){i()})},s=!1,A=!1,l=e.getElementsByTagName("option");if(l&&0<l.length){for(var c=-1,d=0;d<l.length;d++){var u=(l[d].text||"").toLowerCase().replace(r,"");if((l[d].getAttribute("value")||"").toLowerCase().replace(r,"")==o||u==o){l[d].selected||(s=!0,l[d].selected=!0),A=!0;break}-1==c&&-1!=u.indexOf(o)&&(c=d)}A||-1==c||n||l[c].selected||(s=!0,A=l[c].selected=!0)}e.setAttribute("abineFillResponse",A),s?g(e,t,a):a()}function r(){if(0<(t=document.getElementsByClassName("abineFillTarget")).length)return t[0];for(var e=0;e<frames.length;e++)try{var t;if(0<(t=frames[e].document.getElementsByClassName("abineFillTarget")).length)return t[0]}catch(s){}return null}function e(){var n=document.createElement("div");n.id="abineFillElement","undefined"!=typeof paypal&&n.setAttribute("data-paypal","1"),"undefined"!=typeof OffAmazonPayments&&n.setAttribute("data-amazon","1"),"undefined"!=typeof MasterPass&&n.setAttribute("data-masterpass","1"),document.documentElement.appendChild(n),n.addEventListener("fill",function(){var e=r();e?t(e,n.getAttribute("value"),function(){}):h(document,{type:"abineFilled"},function(){})},!1),n.addEventListener("fillSelect",function(){var e=r();e?i(e,n.getAttribute("value"),!!n.getAttribute("skipPartial"),function(){}):h(document,{type:"abineFilled"},function(){})}),n.addEventListener("triggerChange",function(){var e=r(),t=n.getAttribute("value");e&&(e.nodeName.match(/select/i)?g(e,t,function(){}):A(e,t,function(){}))})}e()}()})()</script></head>
+
+<body>
+  <!-- novaidate disables browser validation so JS can do it w/o interference. -->
+  <form novalidate="" abineguid="408DD24FFC2C496199C9378407020807">
+    <p>Boy, do we have some spam for you! 
+      <label for="mail">
+        <span>Just enter an email address:</span>
+        <input type="email" id="mail" name="mail" required="" minlength="8">
+        <span class="error" aria-live="polite"></span>
+      </label>
+    </p>
+    <button>Submit</button>
+  </form>
+
+  <script>
+    // There are many ways to pick a DOM node; here we get the form itself and the email
+    // input box, as well as the span element into which we will place the error message.
+    const form  = document.getElementsByTagName('form')[0];
+
+    const email = document.getElementById('mail');
+    const emailError = document.querySelector('#mail + span.error');
+
+    email.addEventListener('input', function (event) {
+      // Each time the user types something, we check if the
+      // form fields are valid.
+
+      if (email.validity.valid) {
+        // In case there is an error message visible, if the field
+        // is valid, we remove the error message.
+        // here's a regEx pattern if we don't use JS method: const emailRegExp =
+        // /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        emailError.innerHTML = ''; // Reset the content of the message
+        emailError.className = 'error'; // Reset the visual state of the message
+      } else {
+        // If there is still an error, show the correct error
+        showError();
+      }
+    });
+
+    form.addEventListener('submit', function (event) {
+      // if the form contains valid data, we let it submit
+
+      if(!email.validity.valid) {
+        // If it isn't, we display an appropriate error message
+        showError();
+        // Then we prevent the form from being sent by canceling the event
+        event.preventDefault();
+      }
+    });
+
+    function showError() {
+      if(email.validity.valueMissing) {
+        // If the field is empty
+        // display the following error message.
+        emailError.textContent = 'You need to enter an e-mail address.';
+      } else if(email.validity.typeMismatch) {
+        // If the field doesn't contain an email address
+        // display the following error message.
+        emailError.textContent = 'Entered value needs to be an e-mail address.';
+      } else if(email.validity.tooShort) {
+        // If the data is too short
+        // display the following error message.
+        emailError.textContent = `Email should be at least ${ email.minLength } characters; you entered ${ email.value.length }.`;
+      }
+
+      // Set the styling appropriately
+      emailError.className = 'error active';
+    }
+  </script>
+
+
+
+</body><div id="abineFillElement"></div></html>

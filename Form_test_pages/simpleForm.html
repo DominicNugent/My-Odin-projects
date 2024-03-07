@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>My test page</title>
+    <style>
+      @font-face {
+          font-family: formFont;
+          src: url(fonts/coolvetica-condensed-rg.otf);
+      }
+
+
+      form {
+        /* Center the form on the page */
+        margin: 0 auto;
+        width: 400px;
+        /* Form outline */
+        padding: 1em;
+        border: 1px solid #ccc;
+        border-radius: 1em;
+        background: linear-gradient(120deg, #414454, #777c95);
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      form li + li {
+        margin-top: 1em;
+      }
+
+      label {
+        /* Uniform size & alignment */
+        display: inline-block;
+        width: 120px;/* will push input fields over*/
+        text-align: right;
+        color: white;
+        font-family: formFont;
+        font-size: 26px;
+        letter-spacing: 1.5px;
+      }
+
+      input,
+      textarea {
+        /* To make sure that all text fields have the same font settings
+          By default, textareas have a monospace font */
+        font: 1em sans-serif;
+
+        /* Uniform text field size */
+        width: 260px;
+        box-sizing: border-box;
+
+        /* Match form field borders */
+        border: 1px solid #999;
+      }
+
+      input:focus,
+      textarea:focus {
+        /* Additional highlight for focused elements */
+        border-color: #000;
+      }
+
+      textarea {
+        /* Align multiline text fields with their labels */
+        vertical-align: top;
+
+        /* Provide space to type some text */
+        height: 5em;
+      }
+
+      .button {
+        /* Align buttons with the text fields */
+        padding-left: 124px; /* same size as the label elements */
+      }
+
+      button {
+        /* This extra margin represent roughly the same space as the space
+          between the labels and their text fields */
+        /* margin-left: 0.5em; */
+        padding: 0 20px; /*let the button text breath on the sides*/
+      }
+
+    </style>
+  </head>
+  <body>
+    <p>This is my page</p>
+    <form action="https://httpbin.org/post" method="post">
+      <!-- the list is to structure the form. -->
+      <ul>
+        <li>
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="user_name" />
+        </li>
+        <li>
+          <label for="mail">Email:</label>
+          <input type="email" id="mail" name="user_email" />
+        </li>
+        <li>
+          <label for="msg">Message:</label>
+          <textarea id="msg" name="user_message"></textarea>
+        </li>
+        <li class="button">
+          <button type="submit">Send your message</button>
+        </li>
+      </ul>
+    </form>
+    
+  </body>
+</html>
