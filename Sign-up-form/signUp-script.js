@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 passwordField2.setCustomValidity('Passwords do not match');
                 console.log('Passwords do not match');
                 pwMsg.textContent = '* Passwords do not match';
-
             }
         } else {
             console.log("Need both PW fields to have a value before comparing.");
