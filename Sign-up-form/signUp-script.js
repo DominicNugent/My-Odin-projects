@@ -26,12 +26,10 @@ document.addEventListener('DOMContentLoaded', function () {
         var password2 = passwordField2.value;
         var badPasswords = ['password', 'PASSWORD', 'Password'];
 
-        if (passwordField1.value !== '' && passwordField2.value !== '') {
+        if (password1 !== '' && password2 !== '') {
             // Check if the passwords match
             if (password1 === password2) {
                 // Passwords match, update styles or provide feedback
-                // passwordField1.classList.remove('error');
-                // passwordField2.classList.remove('error');
                 passwordField1.setCustomValidity('');
                 passwordField2.setCustomValidity('');
                 console.log('Passwords match');
@@ -42,8 +40,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             } else {
                 // Passwords do not match, update styles or provide feedback
-                // passwordField1.classList.add('error');
-                // passwordField2.classList.add('error');
                 passwordField1.setCustomValidity('Passwords do not match');
                 passwordField2.setCustomValidity('Passwords do not match');
                 console.log('Passwords do not match');
@@ -52,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } else {
             console.log("Need both PW fields to have a value before comparing.");
-            console.log(`Have: #1 ${password1} and #2${password2}`);
         }
     }
 });
